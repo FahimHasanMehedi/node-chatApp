@@ -1,0 +1,150 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap");
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+.container {
+    max-width: 35rem;
+    margin: 3.2rem auto;
+}
+
+body {
+    font-family: "Roboto", sans-serif;
+    color: #212529;
+}
+
+.heading-primary {
+    font-size: 5.2rem;
+    font-weight: 700;
+    color: #0077b6;
+    letter-spacing: -3px;
+}
+
+.shadow {
+    box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.25), 0px 0px 2px rgba(0, 0, 0, 0.2), 0px 0px 4px rgba(0, 0, 0, 0.15),
+        0px 0px 8px rgba(0, 0, 0, 0.1), 0px 0px 16px rgba(0, 0, 0, 0.05);
+}
+
+
+.button {
+    text-decoration: none;
+    font-size: 1.4rem;
+    color: #edf2ff;
+    padding: 0.3rem 0;
+    background-color: rgb(0, 119, 182);
+    border-radius: 4px;
+    border: none;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.button:link,
+.button:visited {
+    font-size: 1.6rem;
+    padding: 0.5em 2.5em;
+}
+
+.button:hover{
+    background-color: #006ba4;
+}
+.button:active {
+    box-shadow: none;
+}
+
+/* index.html css */
+
+.index-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3.2rem;
+}
+
+.index-section-one {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3.2rem;
+}
+
+.index-section-one .heading-secondary {
+    font-size: 3rem;
+    font-weight: 400;
+    letter-spacing: 2px;
+}
+
+/* login and signup forms */
+
+.auth-layout {
+    border: 1px solid #ccc;
+    padding: 2.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2.4rem;
+    justify-content: space-between;
+}
+
+.auth-section-one {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.auth-header .heading-primary {
+    font-size: 3rem;
+    text-align: center;
+}
+.auth-section-one .heading-secondary {
+    font-size: 2rem;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 2.4rem;
+}
+
+.auth-form div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.input-label {
+    font-size: 1.6rem;
+}
+
+.input-field {
+    border: 1px solid #ccc;
+    padding: 0.7rem;
+    border-radius: 4px;
+}
+
+.input-field:focus {
+    outline-color: #0077b6;
+}
+
+.input-submit {
+    padding: 0.7rem 0;
+}
+
+.auth-prompt {
+    border-top: 1px solid #ccc;
+    font-size: 1.6rem;
+    text-align: center;
+    padding: 1.6rem;
+}
+
+.auth-prompt .button {
+    display: inline-block;
+    font-size: 1.4rem;
+    padding: 0.4em 2em;
+}

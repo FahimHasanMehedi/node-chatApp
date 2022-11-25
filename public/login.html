@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Sign in</title>
+        <link rel="stylesheet" href="css/styles.css" />
+    </head>
+    <body>
+        <div class="container auth-layout shadow">
+            <header class="auth-header">
+                <h1 class="heading-primary">chatApp</h1>
+            </header>
+            <section class="auth-section-one">
+                <h2 class="heading-secondary">Sign in</h2>
+                <form class="auth-form" action="/login" method="post">
+                    <div>
+                        <label class="input-label">Username</label>
+                        <input
+                            class="input-field"
+                            name="username"
+                            type="text"
+                            placeholder="example@email.com"
+                            autocomplete="off"
+                        />
+                    </div>
+
+                    <div>
+                        <label class="input-label">Password</label>
+                        <input class="input-field" name="password" type="password" placeholder="********" autocomplete="off" />
+                    </div>
+
+                    <input class="button shadow input-submit" type="submit" value="Sign in" />
+                    <p class="auth-prompt">Dont' have an account? <a class="button shadow" href="./signup.html">Sign up</a></p>
+                </form>
+            </section>
+        </div>
+    </body>
+</html>
