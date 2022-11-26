@@ -31,7 +31,6 @@ body {
         0px 0px 8px rgba(0, 0, 0, 0.1), 0px 0px 16px rgba(0, 0, 0, 0.05);
 }
 
-
 .button {
     text-decoration: none;
     font-size: 1.4rem;
@@ -50,11 +49,17 @@ body {
     padding: 0.5em 2.5em;
 }
 
-.button:hover{
+.button:hover {
     background-color: #006ba4;
 }
 .button:active {
     box-shadow: none;
+}
+
+.error-message {
+    color: red;
+    font-size: 1.4rem;
+    text-align: center;
 }
 
 /* index.html css */

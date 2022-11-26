@@ -7,9 +7,7 @@ const cookieParser = require("cookie-parser");
 require("./db/mongoose");
 
 // require the routers
-const userRouter = require('./routes/user')
-
-
+const userRouter = require("./routes/user");
 
 const app = express();
 const server = http.createServer(app);
@@ -19,8 +17,8 @@ const publicdirPath = path.join(__dirname, "../public");
 
 app.use(express.static(publicdirPath));
 app.use(express.urlencoded());
+app.use(express.json());
 app.use(cookieParser());
 app.use(userRouter);
-
 
 server.listen("3000");

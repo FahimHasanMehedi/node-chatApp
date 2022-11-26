@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-        minLength: [6, "Password must contain minimum 6 characters."],
+        minLength: [6, "Password must contain minimum 6 characters!!!"],
     },
     tokens: [
         {
@@ -33,12 +33,12 @@ userSchema.statics.findByCredentials = async ({ username, password }) => {
     const user = await User.findOne({ username });
 
     if (!user) {
-        throw new Error("Unable to login.");
+        throw new Error("Unable to login!!!");
     }
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-        throw new Error("Unable to login.");
+        throw new Error("Unable to login!!!");
     }
     return user;
 };
@@ -58,10 +58,10 @@ userSchema.pre("save", async function (next) {
 
 //error handling middleware for saving a document
 userSchema.post("save", function (error, doc, next) {
-    console.log(Object.values(error), error.name);
     if (error.name === "MongoServerError" && error.code === 11000) {
-        next(new Error("Username and Email should be unique."));
+        next(new Error("Username and Email should be unique!!!"));
     } else {
+        if (error.errors.password) throw new Error(error.errors.password.properties.message);
         next();
     }
 });

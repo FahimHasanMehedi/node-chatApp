@@ -16,9 +16,11 @@ router.post("/signup", async (req, res) => {
         res.cookie("token", token, {
             httpOnly: true,
             secure: false,
-        }).redirect("/");
+        }).send({
+            newUser,
+            token,
+        });
     } catch (error) {
-        console.log(error);
         res.status(400).send({
             error: error.message,
         });
@@ -26,7 +28,6 @@ router.post("/signup", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-    console.log(req.body.username)
     try {
         const user = await User.findByCredentials(req.body);
         const token = await user.generateAuthToken();
