@@ -1,0 +1,122 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    background-color: #edf2ff;
+    font-family: "Roboto", sans-serif;
+}
+
+.container {
+    height: 100vh;
+    width: 100%;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    padding: 1.4rem;
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px solid #ccc;
+}
+
+.main {
+    display: flex;
+    flex-grow: 1;
+}
+
+p {
+    font-family: "Montserrat", sans-serif;
+    font-size: 1.6rem;
+}
+
+.shadow {
+    box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.25), 0px 0px 2px rgba(0, 0, 0, 0.2), 0px 0px 4px rgba(0, 0, 0, 0.15),
+        0px 0px 8px rgba(0, 0, 0, 0.1), 0px 0px 16px rgba(0, 0, 0, 0.05);
+}
+
+.heading-primary {
+    font-size: 5.2rem;
+    font-weight: 700;
+    color: #0077b6;
+    letter-spacing: -3px;
+}
+
+.main-nav {
+    display: flex;
+    gap: 5rem;
+    padding-bottom: 1.2rem;
+}
+
+.nav-button {
+    border: none;
+    background: none;
+    padding: 0.5rem;
+    cursor: pointer;
+}
+
+.nav-icon {
+    font-size: 4rem;
+    color: #0077b6;
+}
+
+.section-first {
+    flex-basis: 18%;
+    border-right: 1px solid #ccc;
+}
+.section-message {
+    border-right: 1px solid #ccc;
+    flex-basis: 59%;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.chat-messages {
+    flex-grow: 1;
+    overflow-y: scroll;
+}
+
+.message-form {
+    display: flex;
+    flex-grow: 1;
+}
+
+.message-field {
+    flex-grow: 1;
+    padding: 1.5rem;
+    border: none;
+    font-family: "Montserrat", sans-serif;
+    font-size: 1.6rem;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-radius: 15px;
+}
+.message-button {
+    color: #f8f9fa;
+    font-size: 1.6rem;
+    background-color: #0077b6;
+    padding: 0.8em 3em;
+    border: none;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    font-family: "Roboto", sans-serif;
+    cursor: pointer;
+}
+
+.message-button:hover,
+.message-button:active {
+    background-color: #006ba4;
+}
+
+.section-profile {
+    flex-basis: 18%;
+}

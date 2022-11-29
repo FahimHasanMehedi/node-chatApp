@@ -44,15 +44,20 @@ userSchema.statics.findByCredentials = async ({ username, password }) => {
 };
 
 userSchema.methods.generateAuthToken = async function () {
-    const token = await jwt.sign({ username: this.username }, "seethestonesetinyoureyes");
+    const token = jwt.sign({ _id: this._id.toString() }, "seethestonesetinyoureyes");
 
     this.tokens = this.tokens.concat({ token });
+
+    await this.save();
 
     return token;
 };
 
 userSchema.pre("save", async function (next) {
-    this.password = await bcrypt.hash(this.password, 10);
+    console.log("im inside pre save hooks");
+    if (this.isModified("password")) {
+        this.password = await bcrypt.hash(this.password, 10);
+    }
     next();
 });
 

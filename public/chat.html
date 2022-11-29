@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>chatApp</title>
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet" />
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet" />
+
+        <link rel="stylesheet" href="./css/chat.css" />
+
+        <script type="module" src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule="" src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.js"></script>
+        <script defer src="/socket.io/socket.io.js"></script>
+        <script defer src="./js/chat.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <header class="header">
+                <nav class="main-nav">
+                    <!-- <button class="nav-button"><i class="ph-chats nav-icon"></i></button> -->
+                    <button class="nav-button"><ion-icon class="nav-icon" name="text"></ion-icon></button>
+                    <button class="nav-button"><ion-icon class="nav-icon" name="people"></ion-icon></button>
+                </nav>
+            </header>
+
+            <main class="main">
+                <section class="section-first"></section>
+                <section class="section-message">
+                    <div class="messages chat-messages"><p>hello from the other side</p></div>
+                    <div class="message-box">
+                        <form class="message-form">
+                            <input class="message-field" type="text" />
+                            <input class="message-button" type="submit" value="Send" />
+                        </form>
+                    </div>
+                </section>
+                <section class="section-profile"></section>
+            </main>
+        </div>
+    </body>
+</html>
