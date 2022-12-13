@@ -14,28 +14,49 @@
         <script defer src="./js/signup.js"></script>
     </head>
     <body>
-        <div class="container auth-layout shadow">
+        <div class="auth-layout neo-shadow-up">
             <header class="auth-header">
                 <h1 class="heading-primary">chatApp</h1>
+                <div class="error-prompt"></div>
             </header>
             <section class="auth-section-one">
                 <h2 class="heading-secondary">Sign up</h2>
                 <form class="auth-form">
                     <div>
                         <label class="input-label">Username</label>
-                        <input class="input-field" name="username" type="text" placeholder="ex: JohnDoe" autocomplete="off" />
+                        <input
+                            class="input-field neo-shadow-down"
+                            name="username"
+                            type="text"
+                            placeholder="ex: JohnDoe"
+                            autocomplete="off"
+                        />
                     </div>
                     <div>
                         <label class="input-label">Email</label>
-                        <input class="input-field" name="email" type="text" placeholder="example@email.com" autocomplete="off" />
+                        <input
+                            class="input-field neo-shadow-down"
+                            name="email"
+                            type="text"
+                            placeholder="example@email.com"
+                            autocomplete="off"
+                        />
                     </div>
                     <div>
                         <label class="input-label">Password</label>
-                        <input class="input-field" name="password" type="password" placeholder="********" autocomplete="off" />
+                        <input
+                            class="input-field neo-shadow-down"
+                            name="password"
+                            type="password"
+                            placeholder="********"
+                            autocomplete="off"
+                        />
                     </div>
 
-                    <input class="button shadow input-submit" type="submit" value="Sign up" />
-                    <p class="auth-prompt">Have an account already? <a class="button shadow" href="./login.html">Sign in</a></p>
+                    <input class="button neo-shadow-up input-submit" type="submit" value="Sign up" />
+                    <p class="auth-prompt">
+                        Have an account already? <a class="button neo-shadow-up" href="./login.html">Sign in</a>
+                    </p>
                 </form>
             </section>
         </div>

@@ -11,12 +11,13 @@
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet" />
 
         <link rel="stylesheet" href="css/styles.css" />
-        <script defer src="./js/login.js"></script>
+        <script defer type="module" src="./js/login.js"></script>
     </head>
     <body>
-        <div class="container auth-layout shadow">
+        <div class="container auth-layout neo-shadow-up">
             <header class="auth-header">
                 <h1 class="heading-primary">chatApp</h1>
+                <div class="error-prompt"></div>
             </header>
             <section class="auth-section-one">
                 <h2 class="heading-secondary">Sign in</h2>
@@ -24,7 +25,7 @@
                     <div>
                         <label class="input-label">Username</label>
                         <input
-                            class="input-field"
+                            class="input-field neo-shadow-down"
                             name="username"
                             type="text"
                             placeholder="example@email.com"
@@ -34,11 +35,19 @@
 
                     <div>
                         <label class="input-label">Password</label>
-                        <input class="input-field" name="password" type="password" placeholder="********" autocomplete="off" />
+                        <input
+                            class="input-field neo-shadow-down"
+                            name="password"
+                            type="password"
+                            placeholder="********"
+                            autocomplete="off"
+                        />
                     </div>
 
-                    <input class="button shadow input-submit" type="submit" value="Sign in" />
-                    <p class="auth-prompt">Dont' have an account? <a class="button shadow" href="./signup.html">Sign up</a></p>
+                    <input class="button neo-shadow-up input-submit" type="submit" value="Sign in" />
+                    <p class="auth-prompt">
+                        Dont' have an account? <a class="button neo-shadow-up" href="./signup.html">Sign up</a>
+                    </p>
                 </form>
             </section>
         </div>

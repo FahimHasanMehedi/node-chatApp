@@ -20,6 +20,27 @@ const userSchema = new mongoose.Schema({
         required: true,
         minLength: [6, "Password must contain minimum 6 characters!!!"],
     },
+    friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    requests: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    inbox: [
+        {
+            friendUsername: {
+                type: String,
+            },
+            friendId: {
+                type: mongoose.Schema.Types.ObjectId,
+            },
+            lastMessage: {
+                type: String,
+            },
+            messageId: {
+                type: mongoose.Schema.Types.ObjectId,
+            },
+            sender: {
+                type: String,
+            },
+        },
+    ],
     tokens: [
         {
             token: {
@@ -28,6 +49,8 @@ const userSchema = new mongoose.Schema({
         },
     ],
 });
+
+
 
 userSchema.statics.findByCredentials = async ({ username, password }) => {
     const user = await User.findOne({ username });
@@ -43,6 +66,14 @@ userSchema.statics.findByCredentials = async ({ username, password }) => {
     return user;
 };
 
+userSchema.statics.findByToken = async (token) => {
+    const user = await User.findOne({ token });
+
+    if (!user) throw new Error("Unable to find user");
+
+    return user;
+};
+
 userSchema.methods.generateAuthToken = async function () {
     const token = jwt.sign({ _id: this._id.toString() }, "seethestonesetinyoureyes");
 
@@ -53,8 +84,39 @@ userSchema.methods.generateAuthToken = async function () {
     return token;
 };
 
+userSchema.methods.addFriend = async function (friendUsername) {
+    const friend = await User.findOne({ username: friendUsername }, { _id: 1, friends: 1 });
+
+    this.friends = this.friends.concat(friend._id);
+    friend.friends = friend.friends.concat(this._id);
+    await this.save();
+    await friend.save();
+};
+
+userSchema.methods.getFriends = async function () {
+    await this.populate("friends");
+    return this.friends;
+};
+
+userSchema.methods.addRequest = async function (id) {
+    this.requests = this.requests.concat(id);
+    await this.save();
+
+    return this;
+};
+
+userSchema.methods.deleteRequest = async function (username) {
+    const id = await User.findOne({ username }, { _id: 1 });
+    this.requests = this.requests.filter((request) => !id._id.equals(request));
+    await this.save();
+};
+
+userSchema.methods.getRequests = async function () {
+    await this.populate("requests");
+    return this.requests;
+};
+
 userSchema.pre("save", async function (next) {
-    console.log("im inside pre save hooks");
     if (this.isModified("password")) {
         this.password = await bcrypt.hash(this.password, 10);
     }

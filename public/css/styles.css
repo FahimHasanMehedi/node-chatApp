@@ -7,20 +7,31 @@ html {
     font-size: 62.5%;
 }
 
-.container {
-    max-width: 35rem;
-    margin: 3.2rem auto;
+body {
+    font-family: "Montserrat", sans-serif;
+    background-color: #0077b6;
+    color: #dff0d8;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-body {
-    font-family: "Roboto", sans-serif;
-    color: #212529;
+.neo-shadow-up {
+    border-radius: 50px;
+    background: #0077b6;
+    box-shadow: 6px 6px 12px #00659b, -6px -6px 12px #0089d1;
+}
+
+.neo-shadow-down {
+    border-radius: 50px;
+    background: #0077b6;
+    box-shadow: inset 6px 6px 12px #00659b, inset -6px -6px 12px #0089d1;
 }
 
 .heading-primary {
     font-size: 5.2rem;
     font-weight: 700;
-    color: #0077b6;
     letter-spacing: -3px;
 }
 
@@ -32,9 +43,9 @@ body {
 .button {
     text-decoration: none;
     font-size: 1.4rem;
-    color: #edf2ff;
+    color: #dff0d8;
     padding: 0.3rem 0;
-    background-color: rgb(0, 119, 182);
+    background-color: #0077b6;
     border-radius: 4px;
     border: none;
     transition: all 0.3s;
@@ -65,8 +76,10 @@ body {
 .index-layout {
     display: flex;
     flex-direction: column;
+    flex-basis: 35rem;
+    height: 35rem;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     gap: 3.2rem;
 }
 
@@ -87,7 +100,8 @@ body {
 /* login and signup forms */
 
 .auth-layout {
-    border: 1px solid #ccc;
+    /* border: 1px solid #ccc; */
+    flex-basis: 35rem;
     padding: 2.4rem;
     display: flex;
     flex-direction: column;
@@ -126,13 +140,23 @@ body {
 }
 
 .input-field {
-    border: 1px solid #ccc;
+    /* border: 1px solid #ccc; */
+    border: none;
     padding: 0.7rem;
     border-radius: 4px;
+    color: #dff0d8;
 }
 
-.input-field:focus {
-    outline-color: #0077b6;
+.input-field::placeholder {
+    color: #b2c0ad;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: background-color 5000s;
+    -webkit-text-fill-color: #dff0d8 !important;
 }
 
 .input-submit {
@@ -140,7 +164,7 @@ body {
 }
 
 .auth-prompt {
-    border-top: 1px solid #ccc;
+    border-top: 1px solid #dff0d8;
     font-size: 1.6rem;
     text-align: center;
     padding: 1.6rem;
@@ -150,4 +174,8 @@ body {
     display: inline-block;
     font-size: 1.4rem;
     padding: 0.4em 2em;
+}
+
+.hidden {
+    display: none;
 }
