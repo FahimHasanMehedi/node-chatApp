@@ -1,3 +1,6 @@
+// if (window.history.replaceState) {
+//     window.history.replaceState(null, null, window.location.href);
+// }
 const socket = io();
 
 const $sectionMessage = document.querySelector(".section-message");
@@ -11,14 +14,15 @@ const $usernameDiv = document.querySelector(".receiver");
 const $messageBox = document.querySelector(".message-box");
 const $addFriend = document.querySelector(".add-friend");
 const $inbox = document.querySelector(".inbox");
+const $header = document.querySelector(".header");
 
 const $messagesContainer = document.querySelector(".messages");
 const $friendsContainer = document.querySelector(".friends-container");
 const $searchResultContainer = document.querySelector(".search-result-container");
-// const $addContainer = document.querySelector(".add-friend");
 const $modalContainer = document.querySelector(".modal-data");
 const $requestContainer = document.querySelector(".request-container");
 const $inboxContainer = document.querySelector(".inbox-container");
+const $profileButtonContainer = document.querySelector(".profile-button-container");
 
 const $messageForm = document.querySelector(".message-form");
 const $searchForm = document.querySelector(".search");
@@ -31,6 +35,7 @@ const $addIcon = document.querySelector(".add-icon");
 const $inboxIcon = document.querySelector(".inbox-icon");
 const $requestIcon = document.querySelector(".request-icon");
 const $closeModal = document.querySelector(".close-modal");
+const $downArrowIcon = document.querySelector(".down-arrow-button");
 
 //mustache templates
 const messageLeftTemplate = document.querySelector("#message-left-template").innerHTML;
@@ -45,6 +50,22 @@ const rejectButtonTemplate = document.querySelector("#reject-button-template").i
 const inboxUserTemplate = document.querySelector("#inbox-user-template").innerHTML;
 const inboxTemplate = document.querySelector("#inbox-template").innerHTML;
 const deletePromptTemplate = document.querySelector("#delete-chat-template").innerHTML;
+const profileButtonTemplate = document.querySelector("#profile-button-template").innerHTML;
+const profileModalTemplate = document.querySelector("#profile-modal-template").innerHTML;
+
+const autoScroll = () => {
+    const $newMessage = $messagesContainer.lastElementChild;
+
+    const newMessageHeight = $newMessage.offsetHeight + parseInt(getComputedStyle($newMessage).marginBottom);
+
+    const visibleHeight = $messagesContainer.offsetHeight;
+
+    const scrolledHeight = $messagesContainer.scrollTop + visibleHeight;
+
+    const totalHeight = $messagesContainer.scrollHeight;
+
+    if (scrolledHeight >= totalHeight - 12 * newMessageHeight) $messagesContainer.scrollTo(0, totalHeight);
+};
 
 const renderMessage = (message, direction) => {
     let html;
@@ -54,6 +75,18 @@ const renderMessage = (message, direction) => {
         html = Mustache.render(messageLeftTemplate, { message });
     }
     $messagesContainer.insertAdjacentHTML("beforeend", html);
+    autoScroll();
+};
+
+const renderProfileButton = (username) => {
+    $profileButtonContainer.innerHTML = "";
+    const html = Mustache.render(profileButtonTemplate, { user: username });
+    $profileButtonContainer.insertAdjacentHTML("beforeend", html);
+
+    const $profileButton = document.querySelector(".profile-button");
+    $profileButton.addEventListener("click", () => {
+        socket.emit("fetch own profile");
+    });
 };
 
 const renderFriends = (friend) => {
@@ -101,7 +134,6 @@ const renderInboxTitle = (user) => {
         const username = $userInfoIcon.getAttribute("name");
         socket.emit("fetch user profile", username);
     });
-    console.log($chatDeleteIcon);
     $chatDeleteIcon.addEventListener("click", () => {
         renderDeletePrompt();
     });
@@ -136,15 +168,11 @@ const renderFriendReqModal = (username) => {
     });
 };
 
-$closeModal.addEventListener("click", () => {
-    $modal.style.display = "none";
-    $overlay.classList.add("hidden");
-    $modalContainer.innerHTML = "";
-});
-
 socket.on("user connected", (username) => {
     socket.username = username;
     socket.emit("fetch inbox messages");
+
+    renderProfileButton(username);
 });
 
 socket.on("fetched friends", (friends) => {
@@ -166,6 +194,10 @@ socket.on("unfriended", ({ from, to }) => {
 });
 
 socket.on("private message", (chat) => {
+    console.log("private message");
+    const $chatDeleteIcon = document.querySelector(".chat-delete-button");
+    if ($chatDeleteIcon?.disabled) $chatDeleteIcon.disabled = false;
+
     if (chat.sender === socket.username) {
         renderMessage(chat.message, "right");
         socket.emit("fetch inbox messages");
@@ -173,13 +205,14 @@ socket.on("private message", (chat) => {
         renderMessage(chat.message, "left");
         socket.emit("fetch inbox messages");
     }
+
+    console.log('private msg')
 });
 
 socket.on("fetched messages", (chats) => {
     const $chatDeleteIcon = document.querySelector(".chat-delete-button");
-    console.log($chatDeleteIcon);
+
     if (chats.length === 0) {
-        console.log("hi there");
         return ($chatDeleteIcon.disabled = true);
     }
     $chatDeleteIcon.disabled = false;
@@ -190,6 +223,18 @@ socket.on("fetched messages", (chats) => {
             renderMessage(c.message, "left");
         }
     }
+
+    $messagesContainer.addEventListener("scroll", (e) => {
+        const totalHeight = $messagesContainer.scrollHeight;
+        const scrolledHeight = $messagesContainer.scrollTop;
+        const visibleHeight = $messagesContainer.offsetHeight;
+
+        if (totalHeight - scrolledHeight > 2 * visibleHeight) {
+            $downArrowIcon.classList.remove("hidden");
+        } else {
+            $downArrowIcon.classList.add("hidden");
+        }
+    });
 });
 
 socket.on("fetched requests", (requests) => {
@@ -197,6 +242,19 @@ socket.on("fetched requests", (requests) => {
     for (let r of requests) {
         renderRequests(r);
     }
+});
+
+socket.on("fetched own profile", ({ username, email }) => {
+    $modal.style.display = "flex";
+    $overlay.classList.remove("hidden");
+    $modalContainer.innerHTML = "";
+    const phtml = Mustache.render(profileModalTemplate, { user: username, email: email });
+    $modalContainer.insertAdjacentHTML("beforeend", phtml);
+    const $logoutButton = document.querySelector(".logout-button");
+
+    $logoutButton.addEventListener("click", () => {
+        socket.emit("logout");
+    });
 });
 
 socket.on("deleted request", () => {
@@ -211,7 +269,7 @@ socket.on("deleted chats", ({ from, to }) => {
 });
 
 socket.on("connect_error", () => {
-    window.location.replace("../index.html");
+    window.location.replace("/");
 });
 
 socket.on("added request", ({ to }) => {
@@ -235,7 +293,6 @@ socket.on("join room", ({ to, roomname }) => {
 socket.on("show user modal", ({ username, isFriend, isReceived, isSent }) => {
     $modalContainer.innerHTML = "";
     $overlay.classList.remove("hidden");
-    $modal.classList.remove("hidden");
     $modal.style.display = "flex";
     let html = Mustache.render(modalTemplate, { user: username, action: "Add" });
     $modalContainer.insertAdjacentHTML("beforeend", html);
@@ -277,13 +334,10 @@ socket.on("show user modal", ({ username, isFriend, isReceived, isSent }) => {
             });
         });
     }
+});
 
-    const $closeModal = document.querySelector(".close-modal");
-    $closeModal.addEventListener("click", () => {
-        $modal.style.display = "none";
-        $overlay.classList.add("hidden");
-        $modal.classList.add("hidden");
-    });
+socket.on("logged out", () => {
+    window.location.replace("/");
 });
 
 $friendsIcon.addEventListener("click", () => {
@@ -300,9 +354,9 @@ $friendsIcon.addEventListener("click", () => {
 
 $addIcon.addEventListener("click", () => {
     $inbox.style.display = "none";
-    $searchResult.classList.add("hidden");
-    $friends.style.display = "none";
     $requests.style.display = "none";
+    $friends.style.display = "none";
+    $searchResult.classList.add("hidden");
     $friendsContainer.innerHTML = "";
     $messagesContainer.innerHTML = "";
     $requestContainer.innerHTML = "";
@@ -319,6 +373,14 @@ $requestIcon.addEventListener("click", () => {
     $messagesContainer.innerHTML = "";
     $requestContainer.innerHTML = "";
     socket.emit("fetch requests");
+});
+
+$downArrowIcon.addEventListener("click", () => {
+    $messagesContainer.scrollTo({
+        top: $messagesContainer.scrollHeight,
+        left: 0,
+        behavior: "smooth",
+    });
 });
 
 const renderInbox = ({ friend, lastMessage, sender }) => {
@@ -356,12 +418,21 @@ $inboxIcon.addEventListener("click", () => {
     socket.emit("fetch inbox messages");
 });
 
+$closeModal.addEventListener("click", () => {
+    $modal.style.display = "none";
+    $overlay.classList.add("hidden");
+    $modalContainer.innerHTML = "";
+});
+
 $messageForm.addEventListener("submit", (e) => {
     e.preventDefault();
+    if ($messageField.value === "") return;
     socket.emit("private message", {
         to: socket.selectedUser,
         message: $messageField.value,
     });
+    $messageField.value = "";
+    $messageField.focus();
 });
 
 $searchForm.addEventListener("submit", (e) => {
@@ -369,6 +440,8 @@ $searchForm.addEventListener("submit", (e) => {
     $searchResult.style.display = "flex";
     $searchResultContainer.innerHTML = "";
     const username = $searchField.value;
+    $searchField.value = "";
+    $searchField.focus();
     socket.emit("search people", username);
 });
 
@@ -390,6 +463,8 @@ const openChat = (e) => {
     socket.emit("fetch messages", {
         to: socket.selectedUser,
     });
+
+    $messageField.focus();
 };
 
 $friendsContainer.addEventListener("click", openChat);

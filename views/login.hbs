@@ -21,7 +21,7 @@
             </header>
             <section class="auth-section-one">
                 <h2 class="heading-secondary">Sign in</h2>
-                <form class="auth-form" action="/login" method="post">
+                <form class="auth-form">
                     <div>
                         <label class="input-label">Username</label>
                         <input
@@ -30,6 +30,7 @@
                             type="text"
                             placeholder="example@email.com"
                             autocomplete="off"
+                            required
                         />
                     </div>
 
@@ -41,12 +42,13 @@
                             type="password"
                             placeholder="********"
                             autocomplete="off"
+                            required
                         />
                     </div>
 
                     <input class="button neo-shadow-up input-submit" type="submit" value="Sign in" />
                     <p class="auth-prompt">
-                        Dont' have an account? <a class="button neo-shadow-up" href="./signup.html">Sign up</a>
+                        Dont' have an account? <a class="button neo-shadow-up" href="./signup">Sign up</a>
                     </p>
                 </form>
             </section>

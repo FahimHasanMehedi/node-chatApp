@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
@@ -11,7 +10,6 @@
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet" />
 
         <link rel="stylesheet" href="css/styles.css" />
-        <script defer src="./js/signup.js"></script>
     </head>
     <body>
         <div class="auth-layout neo-shadow-up">
@@ -21,7 +19,7 @@
             </header>
             <section class="auth-section-one">
                 <h2 class="heading-secondary">Sign up</h2>
-                <form class="auth-form">
+                <form class="auth-form" action="/signup" method="post">
                     <div>
                         <label class="input-label">Username</label>
                         <input
@@ -30,6 +28,7 @@
                             type="text"
                             placeholder="ex: JohnDoe"
                             autocomplete="off"
+                            required
                         />
                     </div>
                     <div>
@@ -40,6 +39,7 @@
                             type="text"
                             placeholder="example@email.com"
                             autocomplete="off"
+                            required
                         />
                     </div>
                     <div>
@@ -50,12 +50,14 @@
                             type="password"
                             placeholder="********"
                             autocomplete="off"
+                            required
                         />
                     </div>
 
                     <input class="button neo-shadow-up input-submit" type="submit" value="Sign up" />
                     <p class="auth-prompt">
-                        Have an account already? <a class="button neo-shadow-up" href="./login.html">Sign in</a>
+                        Have an account already?
+                        <a class="button neo-shadow-up" href="./login">Sign in</a>
                     </p>
                 </form>
             </section>

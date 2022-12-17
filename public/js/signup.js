@@ -31,7 +31,7 @@ $form.addEventListener("submit", async (e) => {
         .then((data) => {
             if (data.error) throw new Error(data.error);
 
-            window.location.replace("../chat.html");
+            window.location.replace("/chat");
         })
         .catch((error) => {
             const html = `<p class="error-message">${error.message}</p>`;

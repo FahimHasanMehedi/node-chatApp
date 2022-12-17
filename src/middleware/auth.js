@@ -1,4 +1,3 @@
-const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 
@@ -10,9 +9,8 @@ const auth = async (socket, next) => {
         } else {
             token = cookies[0].replace("token=", "");
         }
-
         const decoded = await jwt.verify(token, "seethestonesetinyoureyes");
-        const user = await User.findOne({ _id: decoded._id, token });
+        const user = await User.findOne({ _id: decoded._id, "tokens.token": token });
         if (!user) throw new Error("Please authenticate");
         socket.token = token;
         socket.userId = user._id;

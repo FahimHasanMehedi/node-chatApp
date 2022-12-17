@@ -16,23 +16,27 @@ const Chat = require("./models/chats");
 
 //require the middlewares
 const auth = require("./middleware/auth");
+const expressAuth = require("./middleware/expressAuth");
 
 const app = express();
 const server = http.createServer(app);
 const io = new socketIo.Server(server, { cookie: false });
 
 //paths
-const publicdirPath = path.join(__dirname, "../public");
+const publicDirPath = path.join(__dirname, "../public");
 
-app.use(express.static(publicdirPath, { fallthrough: true }));
+app.set("view engine", "hbs");
+
+app.use(cookieParser());
+app.use(express.static(publicDirPath));
 app.use(express.urlencoded());
 app.use(express.json());
-app.use(cookieParser());
 app.use(userRouter);
 
 io.use(auth);
 
 io.on("connection", (socket) => {
+    console.log('a user connected')
     socket.emit("user connected", socket.username);
 
     socket.on("fetch requests", async () => {
@@ -147,6 +151,11 @@ io.on("connection", (socket) => {
 
         if (me.length === 0) return socket.emit("fetched inbox messages", []);
 
+        // for (let i of me) {
+        //     console.log(i.inbox);
+        // }
+        console.log("-----------------------");
+        console.log(me[0].inbox);
         socket.emit("fetched inbox messages", me[0].inbox);
     });
 
@@ -166,6 +175,11 @@ io.on("connection", (socket) => {
             isReceived,
             isSent,
         });
+    });
+
+    socket.on("fetch own profile", async () => {
+        const me = await User.findOne({ _id: socket.userId });
+        socket.emit("fetched own profile", { username: me.username, email: me.email });
     });
 
     socket.on("private message", async ({ to, message }) => {
@@ -223,10 +237,20 @@ io.on("connection", (socket) => {
             });
         }
 
-        io.to(roomname).emit("private message", chat);
         await friend.save();
         await me.save();
         await chat.save();
+        io.to(roomname).emit("private message", chat);
+    });
+
+    socket.on("logout", async () => {
+        const me = await User.findOne({ _id: socket.userId }, { tokens: 1 });
+
+        me.tokens = me.tokens.filter((token) => token.token !== socket.token);
+
+        await me.save();
+
+        socket.emit("logged out");
     });
 });
 

@@ -14,19 +14,19 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet" />
 
+        <link rel="stylesheet" href="./css/general.css" />
         <link rel="stylesheet" href="./css/chat.css" />
 
         <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
         <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
         <script defer src="https://unpkg.com/mustache@latest"></script>
         <script defer src="/socket.io/socket.io.js"></script>
-        <script defer type="module" src="./js/chat.js"></script>
+        <script defer src="./js/chat.js"></script>
     </head>
     <body>
         <div class="container">
             <header class="header neo-shadow-up">
                 <nav class="main-nav">
-                    <!-- <button class="nav-button"><i class="ph-chats nav-icon"></i></button> -->
                     <button class="nav-button inbox-icon">
                         <ion-icon class="nav-icon" name="chatbubble-outline"></ion-icon>
                     </button>
@@ -40,9 +40,10 @@
                         <ion-icon class="nav-icon" name="person-add-outline"></ion-icon>
                     </button>
                 </nav>
+                <div class="profile-button-container"></div>
             </header>
 
-            <section class="modal hidden">
+            <section class="modal">
                 <button class="close-modal">&times;</button>
                 <div class="modal-data"></div>
             </section>
@@ -51,27 +52,25 @@
                 <section class="section-first neo-shadow-up">
                     <div class="inbox">
                         <h1 class="heading-alt">INBOX</h1>
-                        <div class="inbox-container"></div>
+                        <div class="inbox-container output-container"></div>
                     </div>
                     <div class="friends">
                         <h1 class="heading-alt">FRIENDS</h1>
-                        <div class="friends-container"></div>
+                        <div class="friends-container output-container"></div>
                     </div>
                     <div class="add-friend hidden">
                         <h1 class="heading-alt">ADD FRIEND</h1>
                         <form class="search">
                             <input class="search-field neo-shadow-down" type="text" placeholder="search..." />
-                            <!-- <input type="submit" /> -->
                         </form>
                         <div class="search-result hidden">
-                            <!-- <h2>Search results</h2> -->
-                            <div class="search-result-container"></div>
+                            <div class="search-result-container output-container"></div>
                         </div>
                     </div>
 
                     <div class="requests hidden">
                         <h1 class="heading-alt">REQUESTS</h1>
-                        <div class="request-container"></div>
+                        <div class="request-container output-container"></div>
                     </div>
                 </section>
 
@@ -81,25 +80,26 @@
                     <div class="messages chat-messages"></div>
 
                     <div class="message-box">
+                        <button class="down-arrow-button hidden">
+                            <ion-icon class="down-icon" name="arrow-down-circle-outline"></ion-icon>
+                        </button>
                         <form class="message-form">
                             <input class="message-field" type="text" placeholder="Type your message here..." />
-                            <!-- <input class="message-button" type="submit" value="Send" /> -->
                         </form>
                     </div>
                 </section>
-                <!-- <section class="section-profile"></section> -->
             </main>
         </div>
 
         <!-- Templates -->
         <script id="inbox-template" type="text/html">
-            <button class="people-button inbox-button" name="{{friend}}">
+            <button class="people-button inbox-button" name="\{{friend}}">
                 <div class="friend">
                     <div class="friend-photo neo-shadow-up"></div>
                     <div class="name-message">
-                        <p class="inbox-name">{{friend}}</p>
+                        <p class="inbox-name">\{{friend}}</p>
                         <div class="last-msg-container">
-                            <p class="inbox-last-message">{{sender}}&nbsp;{{lastMessage}}</p>
+                            <p class="inbox-last-message">\{{sender}}&nbsp;\{{lastMessage}}</p>
                         </div>
                     </div>
                 </div>
@@ -107,19 +107,18 @@
         </script>
 
         <script id="friend-template" type="text/html">
-            <button class="people-button" name="{{user}}">
+            <button class="people-button" name="\{{user}}">
                 <div class="friend">
                     <div class="friend-photo neo-shadow-up"></div>
-                    <span class="friend-name">{{user}}</span>
+                    <span class="friend-name">\{{user}}</span>
                 </div>
             </button>
         </script>
 
         <script id="message-right-template" type="text/html">
             <div class="message-div message-right neo-shadow-up">
-                <!-- <div class="message-photo neo-shadow-up"></div> -->
                 <div class="chat-text  ">
-                    <p>{{message}}</p>
+                    <p>\{{message}}</p>
                 </div>
             </div>
         </script>
@@ -127,23 +126,23 @@
             <div class="message-div message-left">
                 <div class="message-photo neo-shadow-up"></div>
                 <div class="chat-text neo-shadow-up">
-                    <p>{{message}}</p>
+                    <p>\{{message}}</p>
                 </div>
             </div>
         </script>
 
         <script id="search-result-template" type="text/html">
-            <button class="people-button" name="{{user}}">
+            <button class="people-button" name="\{{user}}">
                 <div class="friend">
                     <div class="friend-photo neo-shadow-up"></div>
-                    <p class="friend-name">{{user}}</p>
+                    <p class="friend-name">\{{user}}</p>
                 </div>
             </button>
         </script>
 
         <script id="modal-template" type="text/html">
             <div class="user-data">
-                <h2 class="modal-header">{{user}}</h2>
+                <h2 class="modal-header">\{{user}}</h2>
             </div>
         </script>
 
@@ -171,10 +170,10 @@
         </script>
 
         <script id="request-template" type="text/html">
-            <button class="people-button request-button" name="{{user}}">
+            <button class="people-button request-button" name="\{{user}}">
                 <div class="friend">
                     <div class="friend-photo neo-shadow-up"></div>
-                    <p class="friend-name">{{user}}</p>
+                    <p class="friend-name">\{{user}}</p>
                 </div>
             </button>
         </script>
@@ -193,16 +192,34 @@
         <script id="inbox-user-template" type="text/html">
             <div class="inbox-user">
                 <div class="inbox-photo neo-shadow-up"></div>
-                <h2>{{user}}</h2>
+                <h2>\{{user}}</h2>
             </div>
             <div class="usernamediv-icons">
-                <button class="chat-delete-button inbox-button" name="{{user}}">
+                <button class="chat-delete-button inbox-button" name="\{{user}}">
                     <ion-icon class="chat-delete-icon" name="trash-outline"></ion-icon>
                 </button>
-                <button class="user-info-button inbox-button" name="{{user}}">
+                <button class="user-info-button inbox-button" name="\{{user}}">
                     <ion-icon class="user-profile-icon" name="information-circle-outline"></ion-icon>
                 </button>
             </div>
+        </script>
+
+        <script id="down-arrow-template" type="text/html">
+            <button class="down-arrow-button">
+                <ion-icon name="arrow-down-circle-outline"></ion-icon>
+            </button>
+        </script>
+
+        <script id="profile-button-template" type="text/html">
+            <button class="profile-button neo-shadow-up">\{{user}}</button>
+        </script>
+
+        <script id="profile-modal-template" type="text/html">
+            <div class="user-data">
+                <p>\{{user}}</p>
+                <p>Email: \{{email}}</p>
+            </div>
+            <button class="modal-button logout-button neo-shadow-up">Logout</button>
         </script>
 
         <div class="overlay hidden"></div>

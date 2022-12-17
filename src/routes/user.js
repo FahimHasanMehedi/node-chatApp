@@ -1,16 +1,30 @@
 const express = require("express");
+const hbs = require("hbs");
 
 // require the models
 const User = require("../models/user");
 
 //require the middleware
-const auth = require("../middleware/auth");
+const auth = require("../middleware/expressAuth");
 
 const router = express.Router();
 
-router.post("/", (req, res) => {
-    res.clearCookie("io");
-    res.end();
+router.get("/", auth, (req, res) => {
+    console.log("shfadshf");
+    res.render("index");
+});
+
+router.get("/abc", (req, res) => {
+    const p = User.findOne({ username: "fahim" }).exec();
+    console.log(p);
+});
+
+router.get("/chat", auth, (req, res) => {
+    res.render("chat");
+});
+
+router.get("/signup", auth, (req, res) => {
+    res.render("signup");
 });
 
 router.post("/signup", async (req, res) => {
@@ -22,10 +36,7 @@ router.post("/signup", async (req, res) => {
         res.cookie("token", token, {
             httpOnly: true,
             secure: false,
-        }).send({
-            newUser,
-            token,
-        });
+        }).send({ username: user.username });
     } catch (error) {
         res.status(400).send({
             error: error.message,
@@ -33,13 +44,18 @@ router.post("/signup", async (req, res) => {
     }
 });
 
+router.get("/login", auth, (req, res) => {
+    res.render("login");
+});
+
 router.post("/login", async (req, res) => {
     try {
+        console.log(req.body);
         const user = await User.findByCredentials(req.body);
         const token = await user.generateAuthToken();
         res.cookie("token", token, {
             httpOnly: true,
-        }).send({ user, token });
+        }).send({ username: user.username });
     } catch (error) {
         res.status(400).send({ error: error.message });
     }
