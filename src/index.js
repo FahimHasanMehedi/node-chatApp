@@ -1,3 +1,4 @@
+require("dotenv").config();
 const http = require("http");
 const path = require("path");
 const process = require("process");
@@ -137,7 +138,6 @@ io.on("connection", async (socket) => {
 
             io.emit("deleted chats", { from: socket.username, to: username });
         });
-
     });
 
     socket.on("fetch inbox messages", async () => {
@@ -268,4 +268,6 @@ io.on("connection", async (socket) => {
     });
 });
 
-server.listen("3000");
+server.listen(process.env.PORT);
+
+console.log(process.env)

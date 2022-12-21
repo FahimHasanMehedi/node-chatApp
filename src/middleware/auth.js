@@ -9,7 +9,7 @@ const auth = async (socket, next) => {
         } else {
             token = cookies[0].replace("token=", "");
         }
-        const decoded = await jwt.verify(token, "seethestonesetinyoureyes");
+        const decoded = await jwt.verify(token, process.env.JWT_SECRET);
         const user = await User.findOne({ _id: decoded._id, "tokens.token": token });
         if (!user) throw new Error("Please authenticate");
         socket.token = token;
