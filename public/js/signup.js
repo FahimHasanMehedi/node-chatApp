@@ -5,7 +5,6 @@ const $email = document.querySelector(".input-field[name='email']");
 const $password = document.querySelector(".input-field[name='password']");
 const $errorPrompt = document.querySelector(".error-prompt");
 
-const postData = async () => {};
 
 $form.addEventListener("submit", async (e) => {
     e.preventDefault();

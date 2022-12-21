@@ -1,5 +1,6 @@
 const http = require("http");
 const path = require("path");
+const process = require("process");
 const express = require("express");
 const socketIo = require("socket.io");
 const cookieParser = require("cookie-parser");
@@ -18,6 +19,9 @@ const Chat = require("./models/chats");
 const auth = require("./middleware/auth");
 const expressAuth = require("./middleware/expressAuth");
 
+//require the util functions
+const getUsers = require("./utils/getUsers");
+
 const app = express();
 const server = http.createServer(app);
 const io = new socketIo.Server(server, { cookie: false });
@@ -35,63 +39,70 @@ app.use(userRouter);
 
 io.use(auth);
 
-io.on("connection", (socket) => {
-    console.log('a user connected')
+io.on("connection", async (socket) => {
     socket.emit("user connected", socket.username);
 
     socket.on("fetch requests", async () => {
-        try {
-            const user = await User.findOne({ _id: socket.userId });
-            const requests = await user.getRequests();
-            socket.emit("fetched requests", requests);
-        } catch (error) {
-            console.log(error);
-        }
+        getUsers(socket.username)
+            .then(async (user) => {
+                const requests = await user.getRequests();
+                socket.emit("fetched requests", requests);
+            })
+            .catch((error) => {
+                socket.emit("error");
+            });
     });
 
     socket.on("add request", async ({ to }) => {
-        const user = await User.findOne({ username: to });
-        await user.addRequest(socket.userId);
-        socket.broadcast.emit("added request", { to: user.username });
+        getUsers(to).then(async (friend) => {
+            await friend.addRequest(socket.userId);
+            socket.broadcast.emit("added request", { to: friend.username });
+        });
     });
 
     socket.on("add friend", async (friendUsername) => {
-        const user = await User.findOne({ _id: socket.userId });
-        await user.addFriend(friendUsername);
-        await user.deleteRequest(friendUsername);
-        socket.emit("deleted request");
+        getUsers(socket.username).then(async (me) => {
+            await me.addFriend(friendUsername);
+            await me.deleteRequest(friendUsername);
+            socket.emit("deleted request");
 
-        socket.broadcast.emit("added friend", {
-            from: user.username,
-            user: friendUsername,
+            socket.broadcast.emit("added friend", {
+                from: me.username,
+                user: friendUsername,
+            });
         });
     });
 
     socket.on("unfriend", async (username) => {
-        const me = await User.findOne({ _id: socket.userId }, { friends: 1 });
-        const friend = await User.findOne({ username }, { _id: 1, friends: 1 });
-        me.friends = me.friends.filter((f) => !f.equals(friend._id));
-        friend.friends = friend.friends.filter((f) => !f.equals(socket.userId));
+        Promise.all([getUsers(socket.username), getUsers(username)]).then(async (values) => {
+            const me = values[0];
+            const friend = values[1];
 
-        await me.save();
-        await friend.save();
+            me.friends = me.friends.filter((f) => !f.equals(friend._id));
+            friend.friends = friend.friends.filter((f) => !f.equals(socket.userId));
 
-        io.emit("unfriended", {
-            from: socket.username,
-            to: username,
+            await me.save();
+            await friend.save();
+
+            io.emit("unfriended", {
+                from: socket.username,
+                to: username,
+            });
         });
     });
 
     socket.on("delete request", async (username) => {
-        const user = await User.findOne({ _id: socket.userId });
-        await user.deleteRequest(username);
-        socket.emit("deleted request");
+        getUsers(socket.username).then(async (user) => {
+            await user.deleteRequest(username);
+            socket.emit("deleted request");
+        });
     });
 
     socket.on("get friends", async () => {
-        const user = await User.findOne({ _id: socket.userId });
-        const friends = await user.getFriends();
-        socket.emit("fetched friends", friends);
+        getUsers(socket.username).then(async (me) => {
+            const friends = await me.getFriends();
+            socket.emit("fetched friends", friends);
+        });
     });
 
     socket.on("join room", (room) => {
@@ -114,16 +125,19 @@ io.on("connection", (socket) => {
     socket.on("delete chats", async (username) => {
         const roomname = [socket.username, username].sort().join("");
         await Chat.deleteMany({ roomname });
-        const me = await User.findOne({ _id: socket.userId }, { inbox: 1 });
-        const friend = await User.findOne({ username }, { inbox: 1 });
 
-        me.inbox = me.inbox.filter((inb) => inb.friendUsername !== username);
-        friend.inbox = friend.inbox.filter((inb) => inb.friendUsername !== socket.username);
+        Promise.all([getUsers(socket.username), getUsers(username)]).then(async (values) => {
+            const me = values[0];
+            const friend = values[1];
+            me.inbox = me.inbox.filter((inb) => inb.friendUsername !== username);
+            friend.inbox = friend.inbox.filter((inb) => inb.friendUsername !== socket.username);
 
-        await me.save();
-        await friend.save();
+            await me.save();
+            await friend.save();
 
-        io.emit("deleted chats", { from: socket.username, to: username });
+            io.emit("deleted chats", { from: socket.username, to: username });
+        });
+
     });
 
     socket.on("fetch inbox messages", async () => {
@@ -151,35 +165,34 @@ io.on("connection", (socket) => {
 
         if (me.length === 0) return socket.emit("fetched inbox messages", []);
 
-        // for (let i of me) {
-        //     console.log(i.inbox);
-        // }
-        console.log("-----------------------");
-        console.log(me[0].inbox);
         socket.emit("fetched inbox messages", me[0].inbox);
     });
 
     socket.on("fetch user profile", async (username) => {
-        const friend = await User.findOne({ username }, { _id: 1, friends: 1, requests: 1 });
-        const me = await User.findOne({ _id: socket.userId }, { requests: 1 });
-        let isSent = false;
-        let isReceived = false;
-        let isFriend = false;
-        if (friend.requests.includes(socket.userId)) isSent = true;
-        if (friend.friends.includes(socket.userId)) isFriend = true;
-        if (me.requests.includes(friend._id)) isReceived = true;
+        Promise.all([getUsers(socket.username), getUsers(username)]).then(async (values) => {
+            const me = values[0];
+            const friend = values[1];
 
-        socket.emit("show user modal", {
-            username,
-            isFriend,
-            isReceived,
-            isSent,
+            let isSent = false;
+            let isReceived = false;
+            let isFriend = false;
+            if (friend.requests.includes(socket.userId)) isSent = true;
+            if (friend.friends.includes(socket.userId)) isFriend = true;
+            if (me.requests.includes(friend._id)) isReceived = true;
+
+            socket.emit("show user modal", {
+                username,
+                isFriend,
+                isReceived,
+                isSent,
+            });
         });
     });
 
     socket.on("fetch own profile", async () => {
-        const me = await User.findOne({ _id: socket.userId });
-        socket.emit("fetched own profile", { username: me.username, email: me.email });
+        getUsers(socket.username).then(async (me) => {
+            socket.emit("fetched own profile", { username: me.username, email: me.email });
+        });
     });
 
     socket.on("private message", async ({ to, message }) => {
@@ -189,30 +202,19 @@ io.on("connection", (socket) => {
             roomname,
         });
 
-        const friend = await User.findOne({ username: to }, { _id: 1, inbox: 1 });
-        const me = await User.findOne({ _id: socket.userId }, { inbox: 1 });
+        Promise.all([getUsers(socket.username), getUsers(to)]).then(async (values) => {
+            const me = values[0];
+            const friend = values[1];
+            const chat = new Chat({
+                message,
+                sender: socket.username,
+                receiver: to,
+                roomname,
+            });
 
-        const chat = new Chat({
-            message,
-            sender: socket.username,
-            receiver: to,
-            roomname,
-        });
-
-        let exists = false;
-        for (let i of me.inbox) {
-            if (i.friendId.equals(friend._id)) {
-                i.lastMessage = message;
-                i.messageId = chat._id;
-                i.sender = socket.username;
-                exists = true;
-                break;
-            }
-        }
-
-        if (exists) {
-            for (let i of friend.inbox) {
-                if (i.friendId.equals(socket.userId)) {
+            let exists = false;
+            for (let i of me.inbox) {
+                if (i.friendId.equals(friend._id)) {
                     i.lastMessage = message;
                     i.messageId = chat._id;
                     i.sender = socket.username;
@@ -220,37 +222,49 @@ io.on("connection", (socket) => {
                     break;
                 }
             }
-        } else {
-            me.inbox = me.inbox.concat({
-                friendUsername: to,
-                friendId: friend._id,
-                lastMessage: message,
-                messageId: chat._id,
-                sender: socket.username,
-            });
-            friend.inbox = friend.inbox.concat({
-                friendUsername: socket.username,
-                friendId: socket.userId,
-                lastMessage: message,
-                messageId: chat._id,
-                sender: socket.username,
-            });
-        }
 
-        await friend.save();
-        await me.save();
-        await chat.save();
-        io.to(roomname).emit("private message", chat);
+            if (exists) {
+                for (let i of friend.inbox) {
+                    if (i.friendId.equals(socket.userId)) {
+                        i.lastMessage = message;
+                        i.messageId = chat._id;
+                        i.sender = socket.username;
+                        exists = true;
+                        break;
+                    }
+                }
+            } else {
+                me.inbox = me.inbox.concat({
+                    friendUsername: to,
+                    friendId: friend._id,
+                    lastMessage: message,
+                    messageId: chat._id,
+                    sender: socket.username,
+                });
+                friend.inbox = friend.inbox.concat({
+                    friendUsername: socket.username,
+                    friendId: socket.userId,
+                    lastMessage: message,
+                    messageId: chat._id,
+                    sender: socket.username,
+                });
+            }
+
+            await friend.save();
+            await me.save();
+            await chat.save();
+            io.to(roomname).emit("private message", chat);
+        });
     });
 
     socket.on("logout", async () => {
-        const me = await User.findOne({ _id: socket.userId }, { tokens: 1 });
+        getUsers(socket.username).then(async (me) => {
+            me.tokens = me.tokens.filter((token) => token.token !== socket.token);
 
-        me.tokens = me.tokens.filter((token) => token.token !== socket.token);
+            await me.save();
 
-        await me.save();
-
-        socket.emit("logged out");
+            socket.emit("logged out");
+        });
     });
 });
 

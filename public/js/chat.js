@@ -194,7 +194,6 @@ socket.on("unfriended", ({ from, to }) => {
 });
 
 socket.on("private message", (chat) => {
-    console.log("private message");
     const $chatDeleteIcon = document.querySelector(".chat-delete-button");
     if ($chatDeleteIcon?.disabled) $chatDeleteIcon.disabled = false;
 
@@ -206,7 +205,6 @@ socket.on("private message", (chat) => {
         socket.emit("fetch inbox messages");
     }
 
-    console.log('private msg')
 });
 
 socket.on("fetched messages", (chats) => {
@@ -286,7 +284,6 @@ socket.on("search results", (results) => {
 
 socket.on("join room", ({ to, roomname }) => {
     if (socket.username !== to) return;
-    console.log("salfjhalksjf");
     socket.emit("join room", roomname);
 });
 
@@ -394,7 +391,6 @@ const renderInbox = ({ friend, lastMessage, sender }) => {
 };
 
 socket.on("fetched inbox messages", (inbox) => {
-    console.log(socket.username);
     $inboxContainer.innerHTML = "";
 
     for (let i of inbox) {
@@ -447,7 +443,6 @@ $searchForm.addEventListener("submit", (e) => {
 
 const openChat = (e) => {
     const user = e.target.closest(".people-button");
-    console.log(user);
 
     if (!user) return;
 

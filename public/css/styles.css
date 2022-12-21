@@ -179,3 +179,7 @@ input:-webkit-autofill:active {
 .hidden {
     display: none;
 }
+
+.error-prompt {
+    height: 2rem;
+}

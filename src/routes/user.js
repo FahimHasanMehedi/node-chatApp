@@ -10,13 +10,7 @@ const auth = require("../middleware/expressAuth");
 const router = express.Router();
 
 router.get("/", auth, (req, res) => {
-    console.log("shfadshf");
     res.render("index");
-});
-
-router.get("/abc", (req, res) => {
-    const p = User.findOne({ username: "fahim" }).exec();
-    console.log(p);
 });
 
 router.get("/chat", auth, (req, res) => {
@@ -36,7 +30,7 @@ router.post("/signup", async (req, res) => {
         res.cookie("token", token, {
             httpOnly: true,
             secure: false,
-        }).send({ username: user.username });
+        }).send({ username: newUser.username });
     } catch (error) {
         res.status(400).send({
             error: error.message,
@@ -50,7 +44,6 @@ router.get("/login", auth, (req, res) => {
 
 router.post("/login", async (req, res) => {
     try {
-        console.log(req.body);
         const user = await User.findByCredentials(req.body);
         const token = await user.generateAuthToken();
         res.cookie("token", token, {
