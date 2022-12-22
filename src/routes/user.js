@@ -30,7 +30,11 @@ router.post("/signup", async (req, res) => {
         res.cookie("token", token, {
             httpOnly: true,
             secure: false,
-        }).send({ username: newUser.username });
+        })
+            .cookie("tokenExpiry", Date.now() + 2 * 24 * 3600 * 1000, {
+                httpOnly: true,
+            })
+            .send({ username: newUser.username });
     } catch (error) {
         res.status(400).send({
             error: error.message,
@@ -48,7 +52,11 @@ router.post("/login", async (req, res) => {
         const token = await user.generateAuthToken();
         res.cookie("token", token, {
             httpOnly: true,
-        }).send({ username: user.username });
+        })
+            .cookie("tokenExpiry", Date.now() + 2 * 24 * 3600 * 1000, {
+                httpOnly: true,
+            })
+            .send({ username: user.username });
     } catch (error) {
         res.status(400).send({ error: error.message });
     }

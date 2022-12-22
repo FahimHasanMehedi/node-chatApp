@@ -85,6 +85,12 @@ userSchema.methods.generateAuthToken = async function () {
     return token;
 };
 
+userSchema.methods.deleteTokens = async function (token) {
+    this.tokens = this.tokens.filter((tok) => tok.token !== token);
+
+    await this.save();
+};
+
 userSchema.methods.addFriend = async function (friendUsername) {
     const friend = await User.findOne({ username: friendUsername }, { _id: 1, friends: 1 });
 

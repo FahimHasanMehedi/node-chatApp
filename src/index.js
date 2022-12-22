@@ -259,9 +259,7 @@ io.on("connection", async (socket) => {
 
     socket.on("logout", async () => {
         getUsers(socket.username).then(async (me) => {
-            me.tokens = me.tokens.filter((token) => token.token !== socket.token);
-
-            await me.save();
+            me.deleteTokens(socket.token)
 
             socket.emit("logged out");
         });
@@ -269,5 +267,3 @@ io.on("connection", async (socket) => {
 });
 
 server.listen(process.env.PORT);
-
-console.log(process.env)

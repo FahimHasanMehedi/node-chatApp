@@ -3,15 +3,18 @@ const User = require("../models/user");
 
 const auth = async (socket, next) => {
     try {
-        let token;
         const cookies = socket.handshake.headers.cookie.split(" ");
-        if (cookies.length > 1) {
-        } else {
-            token = cookies[0].replace("token=", "");
-        }
+        const token = cookies[0].replace(/token=|;/g, "");
+        const tokenExpiry = cookies[1].replace(/tokenExpiry=|;/g, "");
         const decoded = await jwt.verify(token, process.env.JWT_SECRET);
         const user = await User.findOne({ _id: decoded._id, "tokens.token": token });
+
         if (!user) throw new Error("Please authenticate");
+
+        if (tokenExpiry < Date.now()) {
+            user.deleteTokens(token);
+            throw new Error("Please authenticate");
+        }
         socket.token = token;
         socket.userId = user._id;
         socket.username = user.username;
