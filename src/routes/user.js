@@ -28,10 +28,12 @@ router.post("/signup", async (req, res) => {
         const token = await newUser.generateAuthToken();
 
         res.cookie("token", token, {
+            expires: new Date(Date.now() + 5 * 12 * 30 * 24 * 3600 * 1000),
             httpOnly: true,
             secure: false,
         })
             .cookie("tokenExpiry", Date.now() + 2 * 24 * 3600 * 1000, {
+                expires: new Date(Date.now() + 5 * 12 * 30 * 24 * 3600 * 1000),
                 httpOnly: true,
             })
             .send({ username: newUser.username });
@@ -51,9 +53,11 @@ router.post("/login", async (req, res) => {
         const user = await User.findByCredentials(req.body);
         const token = await user.generateAuthToken();
         res.cookie("token", token, {
+            expires: new Date(Date.now() + 5 * 12 * 30 * 24 * 3600 * 1000),
             httpOnly: true,
         })
             .cookie("tokenExpiry", Date.now() + 2 * 24 * 3600 * 1000, {
+                expires: new Date(Date.now() + 5 * 12 * 30 * 24 * 3600 * 1000),
                 httpOnly: true,
             })
             .send({ username: user.username });
