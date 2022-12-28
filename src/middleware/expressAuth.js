@@ -3,12 +3,15 @@ const User = require("../models/user");
 const getUsersByToken = require("../utils/getUsersByToken");
 
 const auth = async (req, res, next) => {
-    try {
-        const { token, tokenExpiry } = req.cookies;
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const { token, tokenExpiry } = req.cookies;
 
-        getUsersByToken(decoded._id, token).then((user) => {
-            if (!user) throw new Error();
+    const decoded = await jwt.verify(token, process.env.JWT_SECRET);
+
+    getUsersByToken(decoded._id, token)
+        .then((user) => {
+            if (!user) {
+                throw new Error("Please Authenticate");
+            }
 
             if (tokenExpiry < Date.now()) {
                 user.deleteTokens(token);
@@ -20,12 +23,12 @@ const auth = async (req, res, next) => {
             if (req.url === "/chat") return next();
 
             res.redirect("/chat");
-        });
-    } catch (error) {
-        if (req.url === "/chat") return res.redirect("/");
+        })
+        .catch((error) => {
+            if (req.url === "/chat") return res.redirect("/");
 
-        next();
-    }
+            next();
+        });
 };
 
 module.exports = auth;
