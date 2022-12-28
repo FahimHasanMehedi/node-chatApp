@@ -21,22 +21,23 @@
 
 .nav-icon {
     font-size: 3rem;
-    color: #dff0d8;
+    color: var(--primary-color);
 }
 
 .profile-button {
     padding: 0.4rem 1.4rem;
     margin-right: 4.2rem;
     font-size: 1.8rem;
-    background: none;
+    background: var(--primary-color);
     border: none;
+    border-radius: 5px;
     cursor: pointer;
-    color: inherit;
+    color: var(--font-color-light);
     transition: 0.3s;
 }
 
 .profile-button:hover {
-    background-color: #006ba4;
+    background-color: var(--primary-color-darker);
 }
 
 /********************************************/
@@ -62,14 +63,16 @@
 .delete-buttons button {
     border: none;
     width: 7rem;
+    background: var(--primary-color);
     font-weight: 600;
     font-size: 1.6rem;
     padding: 0.8rem 1.2rem;
     cursor: pointer;
+    color: var(--font-color-light);
 }
 
 .delete-buttons button:hover {
-    background-color: #006ba4;
+    background-color: var(--primary-color-darker);
 }
 
 .modal .add-icon {
@@ -120,7 +123,7 @@
 
 .last-msg-container {
     display: flex;
-    color: #b2c0ad;
+    color: var(--grey);
 }
 
 /* FRIENDS CONTAINER */
@@ -133,7 +136,6 @@
     flex-grow: 1;
 }
 
-
 /* SEARCH FRIENDS CONTAINER */
 .search {
     margin-bottom: 4.8rem;
@@ -143,7 +145,7 @@
     width: 95%;
     padding: 1rem 1rem;
     border: none;
-    color: #dff0d8;
+    color: var(--font-color);
     /* border: 1px solid #ddd; */
     border-radius: 5px;
 }
@@ -152,16 +154,16 @@
     outline: none;
 }
 .search-field::placeholder {
-    color: #b2c0ad;
+    color: var(--grey);
 }
 
-.search-result h2 {
+/* .search-result h2 {
     width: 90%;
     padding-bottom: 0.8rem;
     border-bottom: 1px solid #ddd;
     letter-spacing: -0.2px;
     margin-bottom: 1.2rem;
-}
+} */
 
 /* ADD FRIEND CONTAINER */
 .add-friend {
@@ -235,7 +237,7 @@
 .inbox-button {
     border: none;
     background: none;
-    color: #dff0d8;
+    color: var(--font-color);
     cursor: pointer;
 }
 
@@ -269,18 +271,26 @@
 }
 
 .message-photo {
+    background: var(--primary-color);
     width: 3.5rem;
     height: 3.5rem;
     border-radius: 50%;
 }
 
 .message-right {
+    border-radius: 20px;
     align-self: flex-end;
-    background: #dff0d8;
-    color: #212529;
+    background: #fff;
+    color: var(--font-color);
 }
 .message-left {
     align-self: flex-start;
+}
+
+.message-left .chat-text {
+    border-radius: 20px;
+    background: var(--primary-color);
+    color: var(--font-color-light);
 }
 
 .message-box {
@@ -299,7 +309,7 @@
 
 .down-icon {
     font-size: 4.2rem;
-    color: #212529;
+    color: var(--grey);
 }
 
 .message-form {
@@ -317,33 +327,14 @@
     border: none;
     font-family: "Montserrat", sans-serif;
     font-size: 1.6rem;
-    border: none;
-    background: #dff0d8;
+    background: #fff;
     border-radius: 10px;
 }
 
 .message-field:focus {
     outline: none;
 }
-.message-button {
-    color: #f8f9fa;
-    font-size: 1.6rem;
-    background-color: #0077b6;
-    padding: 0.8em 3em;
-    border: none;
-    border-radius: 10px;
-    font-family: "Roboto", sans-serif;
-    cursor: pointer;
-}
 
-.message-button:hover,
-.message-button:active {
-    background-color: #006ba4;
-}
-
-.section-profile {
-    flex-basis: 18%;
-}
 
 /********************************************/
 /*****************Scrollbar**************/
@@ -354,11 +345,11 @@
 
 ::-webkit-scrollbar-track {
     border-radius: 10px;
-    background: #0077b6;
-    box-shadow: inset 6px 6px 12px #00659b, inset -6px -6px 12px #0089d1;
+    background: var(--font-color-light);
+    /* box-shadow: inset 10px 10px 20px var(--neo-shadow-color), inset -10px -10px 20px #fff; */
 }
 
 ::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    background: #dff0d8;
+    background: var(--grey-light);
 }

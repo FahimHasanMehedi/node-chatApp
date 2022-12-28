@@ -1,3 +1,16 @@
+:root {
+    --bg-color: #e3fafc;
+    --bg-lighter: #f1fdfe;
+    --bg-color-darker: #c5f6fa;
+    --primary-color: #1098ad;
+    --primary-color-darker: #0c8599;
+    --neo-shadow-color: #c1d5d6;
+    --font-color: #212529;
+    --font-color-light: #f8f9fa;
+    --grey: #868e96;
+    --grey-light: #ced4da;
+}
+
 * {
     padding: 0;
     margin: 0;
@@ -9,10 +22,10 @@ html {
 }
 
 body {
-    background-color: #0077b6;
+    background-color: var(--bg-color);
     /* font-family: "Roboto", sans-serif; */
     font-family: "Montserrat", sans-serif;
-    color: #dff0d8;
+    color: var(--font-color);
     position: relative;
 }
 
@@ -45,21 +58,16 @@ p {
     font-size: 1.6rem;
 }
 
-.shadow {
-    box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.25), 0px 0px 2px rgba(0, 0, 0, 0.2), 0px 0px 4px rgba(0, 0, 0, 0.15),
-        0px 0px 8px rgba(0, 0, 0, 0.1), 0px 0px 16px rgba(0, 0, 0, 0.05);
-}
-
 .neo-shadow-up {
     border-radius: 10px;
-    background: #0077b6;
-    box-shadow: 6px 6px 12px #00659b, -6px -6px 12px #0089d1;
+    background: var(--bg-color);
+    box-shadow: 10px 10px 20px var(--neo-shadow-color), -10px -10px 20px #fff;
 }
 
 .neo-shadow-down {
     border-radius: 10px;
-    background: #0077b6;
-    box-shadow: inset 6px 6px 12px #00659b, inset -6px -6px 12px #0089d1;
+    background: var(--bg-color);
+    box-shadow: inset 10px 10px 20px var(--neo-shadow-color), inset -10px -10px 20px #fff;
 }
 
 .hidden {
@@ -70,7 +78,7 @@ p {
 .heading-primary {
     font-size: 5.2rem;
     font-weight: 700;
-    color: #0077b6;
+    color: var(--primary-color);
     letter-spacing: -3px;
 }
 
@@ -95,15 +103,15 @@ ion-icon {
     align-items: center;
     justify-content: center;
     position: absolute;
-    width: 35%;
-    height: 35%;
+    width: 45%;
+    height: 45%;
     z-index: 15;
 
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 
-    background-color: #0077b6;
+    background-color: var(--bg-color);
     padding: 6em;
     border-radius: 15px;
     box-shadow: 0 3rem 5rem rgba(0, 0, 0, 0.3);
@@ -136,8 +144,7 @@ ion-icon {
 .user-data {
     display: flex;
     flex-direction: column;
-    width: 60%;
-    /* border: 1px solid #006ba4; */
+    width: 80%;
     align-items: center;
     justify-content: center;
 }
@@ -146,7 +153,8 @@ ion-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 60%;
+    width: 30%;
+    border-radius: 5px;
     font-weight: 600;
     gap: 1.2rem;
     font-size: 1.4rem;
@@ -154,10 +162,12 @@ ion-icon {
     border: none;
     cursor: pointer;
     transition: all 0.3s;
+    background: var(--primary-color);
+    color: var(--font-color-light)
 }
 
 .modal-button:hover {
-    background-color: #006ba4;
+    background-color: var(--primary-color-darker);
 }
 
 .add-icon {
@@ -173,16 +183,16 @@ ion-icon {
     margin: 0 0.8rem;
     cursor: pointer;
     border-radius: 10px;
-    background-color: #0077b6;
-    color: #dff0d8;
+    background-color: var(--bg-color);
+    color: var(--font-color);
     z-index: 5;
     transition: all 0.3s;
 }
 
 .people-button:hover {
     border-radius: 10px;
-    background: #0077b6;
-    box-shadow: 6px 6px 12px #00659b, -6px -6px 12px #0089d1;
+    background: var(--bg-color);
+    box-shadow: 5px 5px 10px var(--neo-shadow-color), -5px -5px 10px #fff;
 }
 
 .heading-alt {
@@ -190,6 +200,7 @@ ion-icon {
     padding: 0.5rem;
     letter-spacing: -0.5px;
     margin: 0.8rem 0.8rem 0.8rem 0;
+    color: var(--primary-color-darker);
 }
 
 .friend {

@@ -1,3 +1,13 @@
+:root {
+    --bg-color: #e3fafc;
+    --primary-color: #1098ad;
+    --primary-color-darker: #0c8599;
+    --neo-shadow-color: #c1d5d6;
+    --font-color: #212529;
+    --font-color-light: #f8f9fa;
+    --grey: #868e96;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -9,43 +19,44 @@ html {
 
 body {
     font-family: "Montserrat", sans-serif;
-    background-color: #0077b6;
-    color: #dff0d8;
+    background-color: var(--bg-color);
+    color: var(--font-color);
     height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
+/* .neo-shadow-up {
+    border-radius: 50px;
+    background: var(--bg-color);
+    box-shadow: 6px 6px 12px var(--neo-shadow-color), -6px -6px 12px #fff;
+} */
 .neo-shadow-up {
     border-radius: 50px;
-    background: #0077b6;
-    box-shadow: 6px 6px 12px #00659b, -6px -6px 12px #0089d1;
+    background: var(--bg-color);
+    box-shadow: 10px 10px 20px var(--neo-shadow-color), -10px -10px 20px #fff;
 }
 
 .neo-shadow-down {
     border-radius: 50px;
-    background: #0077b6;
-    box-shadow: inset 6px 6px 12px #00659b, inset -6px -6px 12px #0089d1;
+    background: var(--bg-color);
+    box-shadow: inset 10px 10px 20px var(--neo-shadow-color), inset -10px -10px 20px #fff;
 }
 
 .heading-primary {
     font-size: 5.2rem;
     font-weight: 700;
     letter-spacing: -3px;
-}
-
-.shadow {
-    box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.25), 0px 0px 2px rgba(0, 0, 0, 0.2), 0px 0px 4px rgba(0, 0, 0, 0.15),
-        0px 0px 8px rgba(0, 0, 0, 0.1), 0px 0px 16px rgba(0, 0, 0, 0.05);
+    color: var(--primary-color-darker);
 }
 
 .button {
     text-decoration: none;
     font-size: 1.4rem;
-    color: #dff0d8;
+    color: var(--font-color-light);
     padding: 0.3rem 0;
-    background-color: #0077b6;
+    background-color: var(--primary-color);
     border-radius: 4px;
     border: none;
     transition: all 0.3s;
@@ -59,7 +70,7 @@ body {
 }
 
 .button:hover {
-    background-color: #006ba4;
+    background-color: var(--primary-color-darker);
 }
 .button:active {
     box-shadow: none;
@@ -144,11 +155,15 @@ body {
     border: none;
     padding: 0.7rem;
     border-radius: 4px;
-    color: #dff0d8;
+    color: var(--font-color);
 }
 
 .input-field::placeholder {
-    color: #b2c0ad;
+    color: var(--grey);
+}
+
+input:focus {
+    outline: none;
 }
 
 input:-webkit-autofill,
@@ -156,7 +171,7 @@ input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
     transition: background-color 5000s;
-    -webkit-text-fill-color: #dff0d8 !important;
+    -webkit-text-fill-color: var(--font-color) !important;
 }
 
 .input-submit {
@@ -164,7 +179,7 @@ input:-webkit-autofill:active {
 }
 
 .auth-prompt {
-    border-top: 1px solid #dff0d8;
+    border-top: 1px solid var(--primary-color);
     font-size: 1.6rem;
     text-align: center;
     padding: 1.6rem;

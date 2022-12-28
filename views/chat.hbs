@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
@@ -93,121 +92,68 @@
 
         <!-- Templates -->
         <script id="inbox-template" type="text/html">
-            <button class="people-button inbox-button" name="\{{friend}}">
-                <div class="friend">
-                    <div class="friend-photo neo-shadow-up"></div>
-                    <div class="name-message">
-                        <p class="inbox-name">\{{friend}}</p>
-                        <div class="last-msg-container">
-                            <p class="inbox-last-message">\{{sender}}&nbsp;\{{lastMessage}}</p>
-                        </div>
-                    </div>
-                </div>
+            <button class="people-button inbox-button" name="\{{friend}}"> <div class="friend"> <div class="friend-photo
+            neo-shadow-up"></div> <div class="name-message"> <p class="inbox-name">\{{friend}}</p> <div
+            class="last-msg-container"> <p class="inbox-last-message">\{{sender}}&nbsp;\{{lastMessage}}</p> </div> </div> </div>
             </button>
         </script>
 
         <script id="friend-template" type="text/html">
-            <button class="people-button" name="\{{user}}">
-                <div class="friend">
-                    <div class="friend-photo neo-shadow-up"></div>
-                    <span class="friend-name">\{{user}}</span>
-                </div>
-            </button>
+            <button class="people-button" name="\{{user}}"> <div class="friend"> <div class="friend-photo neo-shadow-up"></div>
+            <span class="friend-name">\{{user}}</span> </div> </button>
         </script>
 
         <script id="message-right-template" type="text/html">
-            <div class="message-div message-right neo-shadow-up">
-                <div class="chat-text  ">
-                    <p>\{{message}}</p>
-                </div>
-            </div>
+            <div class="message-div message-right"> <div class="chat-text "> <p>\{{message}}</p> </div> </div>
         </script>
         <script id="message-left-template" type="text/html">
-            <div class="message-div message-left">
-                <div class="message-photo neo-shadow-up"></div>
-                <div class="chat-text neo-shadow-up">
-                    <p>\{{message}}</p>
-                </div>
-            </div>
+            <div class="message-div message-left"> <div class="message-photo "></div> <div class="chat-text"> <p>\{{message}}</p>
+            </div> </div>
         </script>
 
         <script id="search-result-template" type="text/html">
-            <button class="people-button" name="\{{user}}">
-                <div class="friend">
-                    <div class="friend-photo neo-shadow-up"></div>
-                    <p class="friend-name">\{{user}}</p>
-                </div>
-            </button>
+            <button class="people-button" name="\{{user}}"> <div class="friend"> <div class="friend-photo neo-shadow-up"></div> <p
+            class="friend-name">\{{user}}</p> </div> </button>
         </script>
 
         <script id="modal-template" type="text/html">
-            <div class="user-data">
-                <h2 class="modal-header">\{{user}}</h2>
-            </div>
+            <div class="user-data"> <h2 class="modal-header">\{{user}}</h2> </div>
         </script>
 
         <script id="delete-chat-template" type="text/html">
-            <div class="delete-prompt">
-                <h2>Do you want to delete this chat?</h2>
-                <div class="delete-buttons">
-                    <button class="yes-button neo-shadow-up">Yes</button>
-                    <button class="no-button neo-shadow-up">No</button>
-                </div>
-            </div>
+            <div class="delete-prompt"> <h2>Do you want to delete this chat?</h2> <div class="delete-buttons"> <button
+            class="yes-button neo-shadow-up">Yes</button> <button class="no-button neo-shadow-up">No</button> </div> </div>
         </script>
 
         <script id="modal-button-template" type="text/html">
-            <button class="modal-button add-button neo-shadow-up">
-                <span>Add</span>
-                <ion-icon class="add-icon" name="person-add-outline"></ion-icon>
-            </button>
-            <p class="sent-req-prompt hidden">sent request!!!</p>
+            <button class="modal-button add-button neo-shadow-up"> <span>Add</span> <ion-icon class="add-icon"
+            name="person-add-outline"></ion-icon> </button> <p class="sent-req-prompt hidden">sent request!!!</p>
         </script>
 
         <script id="modal-friend-template" type="text/html">
-            <p>Friends!!!</p>
-            <button class="modal-button neo-shadow-up unfriend-button"><span>Unfriend</span></button>
+            <p>Friends!!!</p> <button class="modal-button neo-shadow-up unfriend-button"><span>Unfriend</span></button>
         </script>
 
         <script id="request-template" type="text/html">
-            <button class="people-button request-button" name="\{{user}}">
-                <div class="friend">
-                    <div class="friend-photo neo-shadow-up"></div>
-                    <p class="friend-name">\{{user}}</p>
-                </div>
-            </button>
+            <button class="people-button request-button" name="\{{user}}"> <div class="friend"> <div class="friend-photo
+            neo-shadow-up"></div> <p class="friend-name">\{{user}}</p> </div> </button>
         </script>
 
         <script id="reject-button-template" type="text/html">
-            <button class="modal-button add-button neo-shadow-up">
-                <span>Accept</span>
-                <ion-icon class="add-icon" name="person-add-outline"></ion-icon>
-            </button>
-            <button class="modal-button reject-button neo-shadow-up">
-                <span>Reject</span>
-                <ion-icon class="add-icon" name="close-outline"></ion-icon>
-            </button>
+            <button class="modal-button add-button neo-shadow-up"> <span>Accept</span> <ion-icon class="add-icon"
+            name="person-add-outline"></ion-icon> </button> <button class="modal-button reject-button neo-shadow-up">
+            <span>Reject</span> <ion-icon class="add-icon" name="close-outline"></ion-icon> </button>
         </script>
 
         <script id="inbox-user-template" type="text/html">
-            <div class="inbox-user">
-                <div class="inbox-photo neo-shadow-up"></div>
-                <h2>\{{user}}</h2>
-            </div>
-            <div class="usernamediv-icons">
-                <button class="chat-delete-button inbox-button" name="\{{user}}">
-                    <ion-icon class="chat-delete-icon" name="trash-outline"></ion-icon>
-                </button>
-                <button class="user-info-button inbox-button" name="\{{user}}">
-                    <ion-icon class="user-profile-icon" name="information-circle-outline"></ion-icon>
-                </button>
-            </div>
+            <div class="inbox-user"> <div class="inbox-photo neo-shadow-up"></div> <h2>\{{user}}</h2> </div> <div
+            class="usernamediv-icons"> <button class="chat-delete-button inbox-button" name="\{{user}}"> <ion-icon
+            class="chat-delete-icon" name="trash-outline"></ion-icon> </button> <button class="user-info-button inbox-button"
+            name="\{{user}}"> <ion-icon class="user-profile-icon" name="information-circle-outline"></ion-icon> </button> </div>
         </script>
 
         <script id="down-arrow-template" type="text/html">
-            <button class="down-arrow-button">
-                <ion-icon name="arrow-down-circle-outline"></ion-icon>
-            </button>
+            <button class="down-arrow-button"> <ion-icon name="arrow-down-circle-outline"></ion-icon> </button>
         </script>
 
         <script id="profile-button-template" type="text/html">
@@ -215,11 +161,8 @@
         </script>
 
         <script id="profile-modal-template" type="text/html">
-            <div class="user-data">
-                <p>\{{user}}</p>
-                <p>Email: \{{email}}</p>
-            </div>
-            <button class="modal-button logout-button neo-shadow-up">Logout</button>
+            <div class="user-data"> <p>\{{user}}</p> <p>Email:
+            \{{email}}</p> </div> <button class="modal-button logout-button neo-shadow-up">Logout</button>
         </script>
 
         <div class="overlay hidden"></div>
