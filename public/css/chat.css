@@ -99,9 +99,14 @@
     flex-grow: 1;
 }
 
+.friend-photo-inbox {
+    width: 25%;
+}
+
 .name-message {
     display: flex;
     flex-grow: 1;
+    width: 75% !important;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
@@ -114,7 +119,7 @@
 }
 
 .inbox-last-message {
-    width: 20rem;
+    width: 90%;
     /* flex-grow: 1; */
     text-align: start;
     font-size: 1.4rem;
@@ -123,6 +128,7 @@
 
 .last-msg-container {
     display: flex;
+    width: 90%;
     color: var(--grey);
 }
 
@@ -334,7 +340,6 @@
 .message-field:focus {
     outline: none;
 }
-
 
 /********************************************/
 /*****************Scrollbar**************/

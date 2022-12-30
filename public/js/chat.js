@@ -1,7 +1,11 @@
-// if (window.history.replaceState) {
-//     window.history.replaceState(null, null, window.location.href);
-// }
 const socket = io();
+
+// const documentHeight = () => {
+//     const doc = document.documentElement;
+//     doc.style.setProperty("--doc-height", `${window.innerHeight}px`);
+// };
+// window.addEventListener("resize", documentHeight);
+// documentHeight();
 
 const $sectionMessage = document.querySelector(".section-message");
 
@@ -204,7 +208,6 @@ socket.on("private message", (chat) => {
         renderMessage(chat.message, "left");
         socket.emit("fetch inbox messages");
     }
-
 });
 
 socket.on("fetched messages", (chats) => {

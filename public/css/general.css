@@ -9,6 +9,7 @@
     --font-color-light: #f8f9fa;
     --grey: #868e96;
     --grey-light: #ced4da;
+    --doc-height: 100vh;
 }
 
 * {
@@ -29,8 +30,10 @@ body {
     position: relative;
 }
 
+
 .container {
     height: 100vh;
+    /* height: var(--doc-height); */
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -163,7 +166,7 @@ ion-icon {
     cursor: pointer;
     transition: all 0.3s;
     background: var(--primary-color);
-    color: var(--font-color-light)
+    color: var(--font-color-light);
 }
 
 .modal-button:hover {
@@ -205,14 +208,15 @@ ion-icon {
 
 .friend {
     display: flex;
+    width: 90%;
     align-items: center;
     justify-content: flex-start;
     gap: 2.2rem;
 }
 
 .friend-photo {
-    width: 6rem;
-    height: 6rem;
+    width: 6rem !important;
+    height: 6rem !important;
     border-radius: 50%;
 }
 
