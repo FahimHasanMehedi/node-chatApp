@@ -204,9 +204,11 @@ socket.on("private message", (chat) => {
     if (chat.sender === socket.username) {
         renderMessage(chat.message, "right");
         socket.emit("fetch inbox messages");
-    } else {
+    } else if (socket.selectedUser === chat.sender) {
         renderMessage(chat.message, "left");
         socket.emit("fetch inbox messages");
+    } else{
+        socket.emit('fetch inbox messages')
     }
 });
 

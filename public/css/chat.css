@@ -123,6 +123,7 @@
     /* flex-grow: 1; */
     text-align: start;
     font-size: 1.4rem;
+    white-space: nowrap;
     overflow: hidden;
 }
 
@@ -274,6 +275,7 @@
 
 .chat-text {
     padding: 0.8rem 2.4rem;
+    overflow-wrap: anywhere;
 }
 
 .message-photo {
