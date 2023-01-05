@@ -71,6 +71,12 @@ const autoScroll = () => {
     if (scrolledHeight >= totalHeight - 12 * newMessageHeight) $messagesContainer.scrollTo(0, totalHeight);
 };
 
+const closeModal = () => {
+    $modal.style.display = "none";
+    $overlay.classList.add("hidden");
+    $modalContainer.innerHTML = "";
+};
+
 const renderMessage = (message, direction) => {
     let html;
     if (direction === "right") {
@@ -160,6 +166,7 @@ const renderFriendReqModal = (username) => {
     $addButton.addEventListener("click", () => {
         $addButton.disabled = "true";
         $rejectButton.disabled = "true";
+        closeModal();
 
         socket.emit("add friend", username);
     });
@@ -167,6 +174,7 @@ const renderFriendReqModal = (username) => {
     $rejectButton.addEventListener("click", () => {
         $addButton.disabled = "true";
         $rejectButton.disabled = "true";
+        closeModal();
 
         socket.emit("delete request", username);
     });
@@ -207,8 +215,8 @@ socket.on("private message", (chat) => {
     } else if (socket.selectedUser === chat.sender) {
         renderMessage(chat.message, "left");
         socket.emit("fetch inbox messages");
-    } else{
-        socket.emit('fetch inbox messages')
+    } else {
+        socket.emit("fetch inbox messages");
     }
 });
 
@@ -309,6 +317,8 @@ socket.on("show user modal", ({ username, isFriend, isReceived, isSent }) => {
             $usernameDiv.innerHTML = "";
             $sectionMessage.style.display = "none";
 
+            closeModal();
+
             socket.emit("unfriend", username);
             socket.emit("delete chats", username);
         });
@@ -330,6 +340,7 @@ socket.on("show user modal", ({ username, isFriend, isReceived, isSent }) => {
 
         $addButton.addEventListener("click", () => {
             $addButton.disabled = "true";
+            closeModal();
 
             socket.emit("add request", {
                 to: username,
